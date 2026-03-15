@@ -1,0 +1,45 @@
+{
+  "build": {
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "Dockerfile.txt"
+  },
+  "deploy": {
+    "startCommand": "uvicorn main:app --host 0.0.0.0 --port $PORT",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 5
+  },
+  "environments": {
+    "production": {
+      "env": {
+        "DATABASE_URL": "sqlite:///data/agent.db",
+        "PLATFORM_NAME": "AI Agents",
+        "STRIPE_SECRET_KEY": "sk_test_placeholder",
+        "SENDGRID_API_KEY": "SG_placeholder",
+        "TWILIO_ACCOUNT_SID": "AC_placeholder",
+        "TWILIO_AUTH_TOKEN": "placeholder",
+        "TWILIO_PHONE_NUMBER": "+15005550006",
+        "OPENAI_API_KEY": "sk-",
+        "ANTHROPIC_API_KEY": "sk-ant-",
+        "GROQ_API_KEY": "gsk_"
+      }
+    }
+  },
+  "services": [
+    {
+      "name": "ai-agents-backend",
+      "source": {
+        "type": "DOCKERFILE"
+      },
+      "domains": [
+        {
+          "name": "ai-agents-backend.railway.app",
+          "environment": "production"
+        }
+      ],
+      "port": 8000,
+      "env": {
+        "PORT": 8000
+      }
+    }
+  ]
+}
